@@ -56,6 +56,11 @@ function augmentIsoHunt() {
 		$(document).find("iframe").remove();
 	}
 
+	if (!opts.General.Enable_augmenting){
+		console.log("[MAIN] Augmenting has been disabled");
+		return;
+	}
+	
 	var resultSet = $('#serps').find("tbody").children(":first");
 	if (opts.FilmWeb.Integrate_with_FilmWeb) {
 		resultSet.append("<th>" + prepateURLToOptions("FilmWeb") + "</th>");
@@ -99,6 +104,11 @@ function augmentIsoHunt() {
 		}
 		console.log("-------");
 		console.log("[MAIN] New title: '" + removeDelimiter(originalTitle) + "'");
+		if (opts.Integration.Hide_CAM_versions && isMovieACam(originalTitle)){
+			console.log("movie '" + originalTitle + "' is CAM - skipping display");
+			$(this).hide(500);
+			return;
+		}
 		var cleanedTitle = getCleanTitleIsohunt(originalTitle);
 		if (cleanedTitle == null) {
 			console.error("Torrent title is empty - looks like layout problem");

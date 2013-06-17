@@ -6,6 +6,10 @@ function removeDelimiter(str) {
 	return str.replace(new RegExp(DELIMITER, "gi"), "");
 }
 
+function isMovieACam(movie) {
+	return movie.indexOf("CAM") != -1 || movie.indexOf("HDCam") != -1 || movie.indexOf(".TS.") != -1 || movie.indexOf("TS") != -1;
+}
+
 function isMovieAlreadyBlacklisted(cleanedTitle) {
 	return myBL.contains(cleanedTitle) || myWW.contains(cleanedTitle);
 }
@@ -25,7 +29,7 @@ function addLinksCell(htmlNode, originalTitle, cleanedTitle) {
 	}
 
 	if (myOPT.opts.Links.Add_hide_movie_link) {
-		var watchedBtn = $("<strong><a href='javascript:void(0)'>--&gt;watched</a></strong>");
+		var watchedBtn = $("<strong><a href='javascript:void(0)'>++&gt;watched</a></strong>");
 		watchedBtn.click(function() {
 			if (!isMovieAlreadyBlacklisted(cleanedTitle)) {
 				myBL.add(cleanedTitle);
@@ -38,7 +42,7 @@ function addLinksCell(htmlNode, originalTitle, cleanedTitle) {
 		htmlNode.append(watchedBtn);
 
 		htmlNode.append("<BR/>");
-		var wwatchBtn = $("<strong><NOBR><a href='javascript:void(0)'>--&gt;won't watch</a></NOBR></strong>");
+		var wwatchBtn = $("<strong><NOBR><a href='javascript:void(0)'>++&gt;won't watch</a></NOBR></strong>");
 		wwatchBtn.click(function() {
 			if (!isMovieAlreadyBlacklisted(cleanedTitle)) {
 				myWW.add(cleanedTitle);
@@ -136,7 +140,8 @@ function updateMovieSection(movieNode, content, movie, rating, intOpts) {
 			replaceWith(movieNode, "?");
 		} else {
 			if (rating > 0) {
-				replaceWith(movieNode, $("<div></div>").append("<a title='" + htmlEscape($(content).text()) + "'>" + rating + "</a>"));
+				replaceWith(movieNode, $("<div></div>").append(
+						"<a title='" + htmlEscape($(content).text()) + "'>" + rating + "</a>"));
 			} else {
 				replaceWith(movieNode, "N/A");
 			}
@@ -180,7 +185,9 @@ function createOptionsBreadcrumbsNode() {
 	optionNode.append(createCheckboxOption("Integrate_with_FilmWeb", "Filmweb", myOPT.opts.FilmWeb));
 	optionNode.append(createCheckboxOption("Integrate_with_IMDB", "IMDB", myOPT.opts.IMDB));
 	optionNode.append(createCheckboxOption("Add_links", "Links", myOPT.opts.Links));
-	optionNode.append(prepateURLToOptions("  [More...]"));
+	optionNode.append(createCheckboxOption("Enable_augmenting", "Enable", myOPT.opts.General));
+
+	optionNode.append(prepateURLToOptions("  [More]"));
 	return optionNode;
 }
 
@@ -229,8 +236,8 @@ function getCleanTitleGeneric(originalTitle) {
 	var movieYear = null;
 	var possibleMovieTitle = false;
 	var filmNameClean = removeBrackets(originalTitle, true);
-	var year = filmNameClean
-			.match(new RegExp("[\\(\\[\\ \\.\\*\\-\\{\\_][1-2][0-9][0-9][0-9]([\\)\\]\\ \\.\\,\\*\\}\\[\\-\\_\\(]|$)", "gi"));
+	var year = filmNameClean.match(new RegExp(
+			"[\\(\\[\\ \\.\\*\\-\\{\\_][1-2][0-9][0-9][0-9]([\\)\\]\\ \\.\\,\\*\\}\\[\\-\\_\\(]|$)", "gi"));
 	if (year != null && year.length > 0) {
 		movieYear = getFirstYear(year[0]);
 		var i = filmNameClean.indexOf(year[0]);
@@ -246,8 +253,8 @@ function getCleanTitleGeneric(originalTitle) {
 
 	console.log(" after removing everything inside brackets '" + filmNameClean + "'");
 	//
-	var special = filmNameClean.match(new RegExp("\\.mpg|\\.avi|TOPSIDER|KLAXXON|LIMITED|HDTV|SWEDISH|SWESUB|BDRIP|DVD|AC3|UNRATED|720p",
-			"gi"));
+	var special = filmNameClean.match(new RegExp(
+			"\\.mpg|\\.avi|TOPSIDER|KLAXXON|LIMITED|HDTV|SWEDISH|SWESUB|BDRIP|XviD|DVD|AC3|UNRATED|720p", "gi"));
 	if (special != null && special.length > 0) {
 		var i = filmNameClean.indexOf(special[0]);
 		filmNameClean = filmNameClean.substring(0, i);
@@ -270,9 +277,9 @@ function getCleanTitleGeneric(originalTitle) {
 		};
 	}
 
-	var ttr = [ "XDM", "AAC", "HD", "CAM", "DVDScrRip", "Dvdscr", "Rip", "1CD", "2CD", "MP3", "x264 5.1", "x264", "dvd5", "DVDRip", "RRG",
-			"Xvid", "ICTV", "NL subs", "IPS", "Rel -", "\\*", "720p", "Hindi", "-", "BRRip", "\\(Rel \\)", "\\( Rel \\)", "\\( \\)",
-			"\\(\\)" ];
+	var ttr = [ "XDM", "AAC", "HD", "CAM", "DVDScrRip", "Dvdscr", "WEBRIP", "BRRip", "DVDRip", "Rip", "1CD", "1xCD", "2CD", "MP3", "x264 5.1", "x264", "dvd5",
+			 "RRG", "Xvid", "ICTV", "NL subs", "IPS", "Rel -", "\\*", "720p", "Hindi", "-", "\\(Rel \\)",
+			"\\( Rel \\)", "\\( \\)", "\\(\\)" ];
 	for ( var i in ttr) {
 		filmNameClean = filmNameClean.replace(new RegExp(ttr[i], "gi"), "");
 	}

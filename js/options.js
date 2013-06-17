@@ -20,13 +20,15 @@ Options.prototype.getDefault = function() {
 	return {
 		General : {
 			Enable_this_plugin : true,
+			Enable_augmenting : true,
 			Integrate_with_PirateBay : true,
 			Integrate_with_IsoHunt : true,
 			Remove_adds_on_PirateBay_and_IsoHunt : true
 		},
 		Integration : {
 			Download_one_movie_descryption_at_a_time : true,
-			Display_detailed_informations : true
+			Display_detailed_informations : true,
+			Hide_CAM_versions : true,
 		},
 		IMDB : {
 			Integrate_with_IMDB : true,

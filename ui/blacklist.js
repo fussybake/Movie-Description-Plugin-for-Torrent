@@ -128,6 +128,20 @@ $(document).ready(function() {
 			var blg = new BlacklistGUI(myBL2, "#wonwatch_blacklist");
 			blg.buildBlacklistGUI();
 		});
+		
+		
+		var exportBtn = $("<button>Export</button>");
+		exportBtn.click(function() {
+			alert("TODO export");
+		});
+		
+		var importBtn = $("<button>Import</button>");
+		importBtn.click(function() {
+			alert("TODO import");
+		});
+		var exportDiv = $("#export_import_div");
+		exportDiv.append(exportBtn);
+		exportDiv.append(importBtn);
 	});
 
 });
