@@ -45,7 +45,7 @@ function callFilmwebForExplicitMovie(movieNode, Movie, theUrl, callback) {
 			contentNode.find(".rankAndWts").remove();
 			makeHrefAbsolute(filmwebUrl, contentNode);
 
-			console.log(contentNode.html());
+			// console.log(contentNode.html());
 			var det = {};
 
 			var filmTitleNd = contentNode.find(".filmTitle");
@@ -82,7 +82,7 @@ function callFilmwebForExplicitMovie(movieNode, Movie, theUrl, callback) {
 			});
 			det.filmInfo = filmInfo;
 
-			console.log("DETAILS = " + JSON.stringify(det));
+			// console.log("DETAILS = " + JSON.stringify(det));
 
 			var movieHtml = "<h3><a href='" + det.href + "'>" + det.titlePol + " " + det.year + "</a></h3>";
 			if (det.titleAng) {

@@ -40,75 +40,39 @@ function extractDataFromMoviePage(n, movieId) {
 		$(this).replaceWith($("<h3><a href='" + movieId + "'> " + $(this).text() + "</a><h3>"));
 	});
 	removeMetaHtmlAttrs(n);
-	//WRONG
+	// WRONG: must be relative to movie URL, not imdb
 	makeHrefAbsolute(imdbUrl, n);
 	return $("<div>" + removeNewLines(n.html()) + "</div>");
 }
 
-function extractPossibleData(_movieNode, data, movie) {
+function extractPossibleData(movieNode, data, movie) {
 	var nodeHtml = "<div>";
-	var mainNode = $(data).find("#main");
-	mainNode.find(".show-hide").remove();
+	var mainNode = $(data).find("#main").find(".findSection:first").find("table.findList");
 
-	var possibleMovies = new Array();
-	mainNode.find("table").each(function() {
-		var titleTitle = $(this).prev().text().trim();
-		if (titleTitle.length == 0) {
-			return;
-		}
-		titleTitle = removeOnlyBrackets(titleTitle);
-		titleTitle = titleTitle.replace(/titles/gi, "");
-		titleTitle = titleTitle.replace(new RegExp("Displaying.+?(Results|Result)", "gi"), "");
+	// console.log(mainNode.html());
 
-		titleTitle = titleTitle.trim();
-		var wrongSections = [ "Keywords Approx Matches", "Companies Approx Matches", "Names Approx Matches" ];
+	var possibleMovies = [];
+	mainNode.find("td.result_text").each(function() {
+		var nThis = $(this);
+		var titleTitle = nThis.text().trim();
+		var wrongSections = [ "(TV Series)", "(TV Episode)", "(TV Movie)", "(TV Special)", "(Short)", "(Video Game)" ];
 		if (containsAny(titleTitle, wrongSections)) {
 			return;
 		}
 
-		var isHeaderAdded = false;
-		var tds = $(this).find("tbody > tr > td:nth-child(3)");
-		var total = 0;
-		tds.each(function() {
-			if (total > 3) {
+		var year = nThis.contents().filter(function() {
+			return this.nodeType == Node.TEXT_NODE;
+		}).text();
+
+		if (movie.year) {
+			if (year.indexOf(movie.year) == -1) {
 				return;
 			}
-			var n = $(this);
-			n.find("a").removeAttr("onclick");
-			n.find("br,img").remove();
-			n.find("a:empty").remove();
-
-			n.find("p").each(function() {
-				$(this).replaceWith("<div>" + $(this).text() + "</div>");
-			});
-
-			var year = n.contents().filter(function() {
-				return this.nodeType == Node.TEXT_NODE;
-			}).text();
-
-			year = year + " " + n.find("small").text();
-
-			var wrongTypes = [ "TV", "VG", "TV series" ];
-			if (containsAny(year, wrongTypes)) {
-				return;
-			}
-			if (movie.year != null) {
-				if (year.indexOf(movie.year) == -1) {
-					return;
-				}
-			}
-			if (!isHeaderAdded) {
-				nodeHtml = nodeHtml + "<div><h3>" + titleTitle + "</h3><ul>";
-				isHeaderAdded = true;
-			}
-			total++;
-			possibleMovies.push(n.find("a[href^='/title/tt']").attr("href"));
-			nodeHtml = nodeHtml + "<li>" + n.html().trim() + "</li>";
-		});
-
-		if (isHeaderAdded) {
-			nodeHtml = nodeHtml + "</ul></div>";
 		}
+
+		var mUrl = nThis.find("a[href^='/title/tt']").attr("href");
+		possibleMovies.push(mUrl);
+		nodeHtml = nodeHtml + "<div>" + $(this).html() + "</div>";
 	});
 	nodeHtml = nodeHtml + "</div>";
 	if (nodeHtml.length < 20) {
@@ -117,7 +81,7 @@ function extractPossibleData(_movieNode, data, movie) {
 
 	if (possibleMovies.length == 1) {
 		console.log("[IMDB] there is only movie on main search, displaying that movie");
-		callImdbForMovie(_movieNode, movie, possibleMovies[0]);
+		callImdbForMovie(movieNode, movie, possibleMovies[0]);
 		return null;
 	}
 
@@ -257,6 +221,8 @@ function callImdbForFirstHit(movieNode, Movie) {
 		},
 		success : function(data) {
 			var contentNode = $(data).find("#overview-top");
+			// when going to imdb redirects query is so uniq that it just
+			// redirects to movie display page
 			if (contentNode.length > 0) {
 				contentNode = extractDataFromMoviePage(contentNode, "need_to_fix_this");
 				var rating = getRatingFromIMDB(contentNode);

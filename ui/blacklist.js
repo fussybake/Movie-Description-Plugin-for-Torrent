@@ -90,7 +90,7 @@ BlacklistGUI.prototype.buildBlacklistGUI = function() {
 				var imdbNode = $("<td id='" + className + "_imdb_" + i + "'>" + getAjaxIcon() + "</td>");
 				nRow.append(imdbNode);
 			}
-		}else{
+		} else {
 			nRow.append(resurrectBtn);
 		}
 		nTable.append(nRow);
@@ -102,6 +102,8 @@ BlacklistGUI.prototype.buildBlacklistGUI = function() {
 	if (myOPT.opts.Blacklist.Display_movie_descryption) {
 		for ( var i in this.myBL.mblacklist.movies) {
 			var cleanedTitle = this.myBL.mblacklist.movies[i];
+			// this prevent from displaying q about 'is a movie' on the bl
+			cleanedTitle.not_sure = false;
 			if (myOPT.opts.FilmWeb.Integrate_with_FilmWeb) {
 				addFilmwebCell($('#' + className + '_filmweb_' + i), cleanedTitle);
 			}
@@ -128,13 +130,12 @@ $(document).ready(function() {
 			var blg = new BlacklistGUI(myBL2, "#wonwatch_blacklist");
 			blg.buildBlacklistGUI();
 		});
-		
-		
+
 		var exportBtn = $("<button>Export</button>");
 		exportBtn.click(function() {
 			alert("TODO export");
 		});
-		
+
 		var importBtn = $("<button>Import</button>");
 		importBtn.click(function() {
 			alert("TODO import");
