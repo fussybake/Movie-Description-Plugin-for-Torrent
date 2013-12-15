@@ -7,7 +7,11 @@ function removeDelimiter(str) {
 }
 
 function isMovieACam(movie) {
-	return movie.indexOf("CAM") != -1 || movie.indexOf("HDCam") != -1 || movie.indexOf(".TS.") != -1 || movie.indexOf("TS") != -1;
+	return movie.indexOf("CAM") != -1 || movie.indexOf("Cam") != -1 || movie.indexOf("HDCam") != -1 || movie.indexOf(".TS.") != -1 || movie.indexOf("TS") != -1;
+}
+
+function isMovieAHindi(movie) {
+	return movie.indexOf("Hindi") != -1;
 }
 
 function isMovieAlreadyBlacklisted(cleanedTitle) {

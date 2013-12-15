@@ -29,6 +29,7 @@ Options.prototype.getDefault = function() {
 			Download_one_movie_descryption_at_a_time : true,
 			Display_detailed_informations : true,
 			Hide_CAM_versions : true,
+			Hide_Hindi_versions : true
 		},
 		IMDB : {
 			Integrate_with_IMDB : true,

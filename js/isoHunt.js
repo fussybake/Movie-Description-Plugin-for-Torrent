@@ -104,6 +104,13 @@ function augmentIsoHunt() {
 		}
 		console.log("-------");
 		console.log("[MAIN] New title: '" + removeDelimiter(originalTitle) + "'");
+		
+		if (opts.Integration.Hide_Hindi_versions && isMovieAHindi(originalTitle)){
+			console.log("movie '" + originalTitle + "' is HINDI - skipping display");
+			$(this).hide(500);
+			return;
+		}
+
 		if (opts.Integration.Hide_CAM_versions && isMovieACam(originalTitle)){
 			console.log("movie '" + originalTitle + "' is CAM - skipping display");
 			$(this).hide(500);
