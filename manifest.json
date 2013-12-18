@@ -15,6 +15,7 @@
 		"storage",
 	    "webRequest",
 	    "webRequestBlocking",
+		"http://thepiratebay.gy/*",
 		"http://thepiratebay.pe/*",
 	    "http://thepiratebay.se/*",
 		"http://thepiratebay.sx/*",
@@ -27,6 +28,7 @@
 		"js": ["lib/jquery.min-1.7.2.js", "lib/jquery.ajaxq-0.0.1.js", "js/options.js", "js/blacklist.js", "js/cache.js", "js/misc.js", "js/filmweb.js", "js/imdb.js", "js/isoHunt.js", "js/pirateBay.js", "js/loader.js", "js/main.js" ],
 		"matches": [
 			"http://thepiratebay.pe/*",
+			"http://thepiratebay.gy/*",
 			"http://thepiratebay.se/*",
 			"http://thepiratebay.sx/*",
 			"http://isohunt.com/*",
