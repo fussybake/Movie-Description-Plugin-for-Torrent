@@ -8,8 +8,6 @@ $(document).ready(function() {
 	afterLoad(function() {
 		if (isPirateBay()) {
 			augmentPirateBay();
-		} else {
-			augmentIsoHunt();
 		}
 	});
 });

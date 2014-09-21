@@ -197,7 +197,7 @@ function createOptionsBreadcrumbsNode() {
 
 function prepateURLToOptions(title) {
 	var href = chrome.extension.getURL("options.html");
-	return "<a href=\"" + href + "\" target=_blank>" + title + "</a>";
+	return "<a target=\"_blank\" href=\"" + href + "\" target=_blank>" + title + "</a>";
 }
 
 function getAjaxIcon() {

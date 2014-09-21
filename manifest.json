@@ -1,9 +1,9 @@
 {
 	"manifest_version": 2,
-	"name": "Movie Description for Torrent Chrome Extension",
-	"version": "0.2.7",
-	"description": "Movie Description for Torrent Chrome Extension",
-	"web_accessible_resources": ["ajax_loading_small.gif"],
+	"name": "Movie Description Plugin for The Pirate Bay",
+	"version": "0.2.8",
+	"description": "Movie Description Plugin for The Pirate Bay",
+	"web_accessible_resources": ["ajax_loading_small.gif", "options.html"],
 	
 	"background": {
     	"scripts":  ["js/options.js", "background.js" ]
@@ -19,19 +19,17 @@
 		"http://thepiratebay.pe/*",
 	    "http://thepiratebay.se/*",
 		"http://thepiratebay.sx/*",
-	    "http://isohunt.com/*",
 	    "http://*/"
 	],
 	
 	"content_scripts": [ {
 		"all_frames": true,
-		"js": ["lib/jquery.min-1.7.2.js", "lib/jquery.ajaxq-0.0.1.js", "js/options.js", "js/blacklist.js", "js/cache.js", "js/misc.js", "js/filmweb.js", "js/imdb.js", "js/isoHunt.js", "js/pirateBay.js", "js/loader.js", "js/main.js" ],
+		"js": ["lib/jquery.min-1.7.2.js", "lib/jquery.ajaxq-0.0.1.js", "js/options.js", "js/blacklist.js", "js/cache.js", "js/misc.js", "js/filmweb.js", "js/imdb.js", "js/pirateBay.js", "js/loader.js", "js/main.js" ],
 		"matches": [
 			"http://thepiratebay.pe/*",
 			"http://thepiratebay.gy/*",
 			"http://thepiratebay.se/*",
 			"http://thepiratebay.sx/*",
-			"http://isohunt.com/*",
 			"http://www.filmweb.pl/*",
 			"http://www.imdb.com/*" ]
 	}]

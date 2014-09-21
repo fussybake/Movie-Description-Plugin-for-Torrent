@@ -22,14 +22,14 @@ Options.prototype.getDefault = function() {
 			Enable_this_plugin : true,
 			Enable_augmenting : true,
 			Integrate_with_PirateBay : true,
-			Integrate_with_IsoHunt : true,
 			Remove_adds_on_PirateBay_and_IsoHunt : true
 		},
 		Integration : {
 			Download_one_movie_descryption_at_a_time : true,
 			Display_detailed_informations : true,
 			Hide_CAM_versions : true,
-			Hide_Hindi_versions : true
+			Hide_Hindi_versions : true,
+			Hide_Genre_Animations : true
 		},
 		IMDB : {
 			Integrate_with_IMDB : true,
