@@ -1,16 +1,16 @@
 Movie Description Plugin for The Pirate Bay
 =============================
-Chrome Extension to Pirate Bay that integrates IMDB and/or FilmWeb description and movie ratings into torrent search results.
+Chrome Extension to The Pirate Bay that integrates IMDB and/or FilmWeb description and movie ratings into torrent search results.
 
 **version 0.2.8, last update: 2014-089-21**
 
 Use Cases
 --------------
-- *As a TPB website user, I don't like those ads on the page* 
+- *As a TPB website user, I don't like those tons of ads on the page* 
 
- Thanks to this plugin you can you can enable option to remove ads on TBP site. It is not perfect, works with approx. 90% of those.
+ This plugin can remove ads on TBP site. It is not perfect though, works with ~ 90% of those ads.
 
-- *I browse TPB in search or interesting movies to watch, but need to check with movie site like IMDB for the movie, to check if movie is interesting for me*
+- *I browse TPB in search or interesting movies to watch, but need to check with movies site like IMDB to check if the movie is interesting*
 
  This plugin automatically extracts movie title from torrent title and downloads movie description with rating from IMDB and/or FilmWeb.
 
@@ -39,14 +39,14 @@ List of features
 
 Installation
 --------------
-- Download latest code, e.g: https://github.com/witoza/movie-description-for-torrent-chrome-extension/zipball/master
+- Download latest code, e.g: https://github.com/witoza/Movie-Description-Plugin-for-The-Pirate-Bay/zipball/master
 - Navigate chrome to **chrome://extensions**
 - Check the **Developer mode** toggle
 - Click on **Load Unpacked Extension...**
 - Select the folder containing the extension and load it
-- Have fun !
+- Go to TPB and enjoy it
 
-Future work (TODO):
+Future work
 --------------
 - export/import movie list to plain file: watched & blacklisted
 - fix expiring cache
