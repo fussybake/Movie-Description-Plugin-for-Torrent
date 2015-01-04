@@ -1,10 +1,5 @@
 "use strict";
 
-
-function isKickassMovies() {
-	return window.location.pathname.indexOf("/movies/1/") >= 0;
-}
-
 function impl(main_part, opts) {
 
 	main_part.find(".sidebarCell").remove();
@@ -85,25 +80,65 @@ function impl(main_part, opts) {
 
 }
 
+var current_page = 1;
+var loading_status = 0;
 
-function add_more_pages(page_nbr, max_pages, main_part, opts) {
-	if (page_nbr >  max_pages) return;
+function handle_infinite_scroll() {
+	var opts = myOPT.opts;
+	var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height(); 
+	var scrolltrigger = 0.95;
+	if  ((wintop/(docheight-winheight)) > scrolltrigger) { 
+		
+		var next_page = current_page + 1;
+		if (loading_status != 0) {
+			console.log("loading page " + next_page +" is in progress");
+			return;
+		}
+		loading_status = 1;
+		var main_part = $(".mainpart");	
 
-	callAjax("", {
-		beforeSend : function () {
-			console.log("getting another page");
-		},
-		url : "https://kickass.so/movies/" + page_nbr,
-		success : function(data) {
+		callAjax("", {
+			beforeSend : function () {
+				console.log("getting page: " + next_page);
+			},
+			url : "https://kickass.so/movies/" + next_page,
+			success : function(data) {
 				var main_part2 = $(data).find(".mainpart");
 				impl(main_part2, opts);
 				//main_part.find(".pages").remove();
 				main_part.parent().append(main_part2);
 
-				add_more_pages(page_nbr + 1, max_pages, main_part, opts);
-		}
-	});
+		
+				current_page = next_page;
+				loading_status = 0; 
+			},
+			failure : function() {
+				loading_status = 0;
+			}
+		});
+	}
+}
 
+function addInfiniteScroll() {
+
+	var path = window.location.pathname;
+
+	if (path.indexOf("/movies/") == -1) {
+		console.log("not adding infinite scroll");
+		return;
+	}
+	// TODO: set current_page based on path
+
+	var scroll_node = 
+		'<script type="text/javascript"> ' 
+		+'	$(document).ready(function(){ ' 
+		+' 		$(window).scroll(function() { ' 
+		+'   		handle_infinite_scroll(); '
+		+' 		}); ' 
+		+'	});' 
+		+'</script>';
+
+	$(window).append(scroll_node);
 }
 
 function augmentKickass() {
@@ -126,16 +161,10 @@ function augmentKickass() {
 		return;
 	}
 
+	addInfiniteScroll();
 
 	var main_part = $(".mainpart");
-
 	createOptionsBreadcrumbsNode().insertBefore(main_part);
-
 	impl(main_part, opts);
-
-	if (isKickassMovies()) {
-		add_more_pages(2, 4, main_part, opts);
-	}
-
 
 }

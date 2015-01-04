@@ -42,6 +42,7 @@ List of features
 - Adds column to search results with links to:  Google search, Google graphic, Filmweb, Imdb search for the original torrent title or movie title
 - Keeps track and hides unwanted movies (blacklist)
 - Removes ads
+- Infinite scroll for Movie Category in kickass
 
 Installation
 --------------
