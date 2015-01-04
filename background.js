@@ -1,42 +1,23 @@
 "use strict";
 
-var myOPT = new Options();
+chrome.runtime.onMessage.addListener(function(request, sender, callback) {
+    if (request.action == "xhttp") {
+        var xhttp = new XMLHttpRequest();
+        var method = request.method ? request.method.toUpperCase() : 'GET';
 
-myOPT.load(function(result) {
-	var opts = myOPT.opts;
-
-	if (opts.General.Enable_this_plugin) {
-
-		if (opts.General.Integrate_with_PirateBay) {
-
-			chrome.webRequest.onBeforeRequest.addListener(function(info) {
-				// alert("url1 intercepted: " + info.url);
-				return {
-					cancel : true
-				};
-			}, {
-
-				urls : [ "http://clkads.com/*", "http://www.facebook.com/*", "http://player.vimeo.com/*", "http://www.888poker.com/*",
-						"http://pl.888.com/*", "http://www.roulettebotplus.com/*", "http://www.twoj-voucher.com/*" ]
-			}, [ "blocking" ]);
-
-		}
-
-		if (opts.General.Integrate_with_IsoHunt) {
-			chrome.webRequest.onBeforeRequest.addListener(function(info) {
-				// alert("url2 intercepted: " + info.url);
-				return {
-					cancel : true
-				};
-			}, {
-				urls : [ "http://altfarm.mediaplex.com/*", "http://optimized.by.vitalads.net/*", "http://ia.media-imdb.com/images/*",
-						"http://isohunt.com/*.php*", "http://www.roulettebotplus.com/*", "http://pl.hornygirlsexposed.com/*",
-						"http://survey-awardscenter.net/*", "http://7.rotator.wigetmedia.com/*", "http://www.wigetmedia.com/tags/isoww.js",
-						"http://www.ad4game.com/*", "http://www.roulettebotplus.com/*", "http://geoadserve2.com/*",
-						"http://**wigetmedia.com/*", "http://www.mgid.com/*", "http://ad.yieldmanager.com/*", "http://*.ad4game.com/*",
-
-						"http://verified-p2p-links.com/*" ]
-			}, [ "blocking" ]);
-		}
-	}
+        xhttp.onload = function() {
+            callback(xhttp.responseText);
+        };
+        xhttp.onerror = function() {
+            // Do whatever you want on error. Don't forget to invoke the
+            // callback to clean up the communication port.
+            callback();
+        };
+        xhttp.open(method, request.url, true);
+        if (method == 'POST') {
+            xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        }
+        xhttp.send(request.data);
+        return true; // prevents the callback from being called too early on return
+    }
 });

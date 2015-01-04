@@ -95,11 +95,30 @@ function addIMDBCell(htmlNode, cleanedTitle) {
 }
 
 function callAjax(qname, callOpts) {
-	if (myOPT.opts.Integration.Download_one_movie_descryption_at_a_time) {
-		$.ajaxq(qname, callOpts);
-	} else {
-		$.ajax(callOpts);
-	}
+
+
+	callOpts.beforeSend();
+	chrome.runtime.sendMessage({
+	    method: callOpts.method,
+	    action: 'xhttp',
+	    url: callOpts.url,
+	    data: 'q=something',
+
+	}, function(responseText) {
+		if (responseText.length == 0) {
+			callOpts.failure(responseText);
+		} else {
+			callOpts.success(responseText);
+		}
+	});
+
+
+
+	//if (myOPT.opts.Integration.Download_one_movie_descryption_at_a_time) {
+	//	$.ajaxq(qname, callOpts);
+	//} else {
+	//	$.ajax(callOpts);
+	//}
 }
 
 function replaceWith(node, str) {

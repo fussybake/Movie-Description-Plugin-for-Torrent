@@ -2,7 +2,7 @@ Movie Description Plugin for The Pirate Bay
 =============================
 Chrome Extension to The Pirate Bay that integrates IMDB and/or FilmWeb description and movie ratings into torrent search results.
 
-**version 0.2.8, last update: 2014-09-21**
+**version 0.2.9, last update: 2015-01-04**
 
 Use Cases
 --------------

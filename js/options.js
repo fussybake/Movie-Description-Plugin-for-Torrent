@@ -22,7 +22,8 @@ Options.prototype.getDefault = function() {
 			Enable_this_plugin : true,
 			Enable_augmenting : true,
 			Integrate_with_PirateBay : true,
-			Remove_adds_on_PirateBay_and_IsoHunt : true
+			Integrate_with_Kickass : true,
+			Remove_adds : true
 		},
 		Integration : {
 			Download_one_movie_descryption_at_a_time : true,
