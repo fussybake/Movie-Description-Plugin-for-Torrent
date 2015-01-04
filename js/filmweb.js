@@ -4,9 +4,14 @@ var filmwebUrl = "http://www.filmweb.pl";
 
 function getRatingFromFilmWeb(rate) {
 	var rating = null;
-	try {
+	try 
+	{
 		var e = rate.indexOf("/");
-		rating = rate.substring(0, e);
+		if (e == -1) 
+			rating = rate;
+		else
+			rating = rate.substring(0, e);
+
 		rating = rating.replace(new RegExp("\\,", "gi"), ".");
 		rating = parseFloat(rating);
 	} catch (err) {
@@ -17,6 +22,42 @@ function getRatingFromFilmWeb(rate) {
 
 function capitaliseFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function constructInfo(det) {
+	var movieHtml = "<h3><a href='" + det.href + "'>" + det.titlePol + /*" " + det.year + */"</a></h3>";
+	if (det.titleAng) {
+		movieHtml = movieHtml + "Ang: <strong>" + det.titleAng + "</strong>";
+	}
+	if (det.rate != null) {
+		movieHtml = movieHtml + "<div>Ratings: <strong>" + det.rate + "</strong> od " + det.votes + "</div>";
+	}
+	movieHtml = movieHtml + "<div><p>" + det.plot + "</p></div>";
+	movieHtml = movieHtml + det.filmInfo;
+
+	return movieHtml;
+}
+
+function fixFilmwebInfo(contentNode) {
+
+	var filmInfo = "";
+	contentNode.find("tr").each(function(i) {
+		var th = $(this).find("th");
+		var td = $(this).find("td");
+
+		if (th.text() == "boxoffice:") return;
+		if (th.text() == "nagrody:") return;
+
+
+		filmInfo = filmInfo + "<div><strong>" + capitaliseFirstLetter(th.text()) + "</strong> ";
+		td.find("a").each(function(i) {
+			filmInfo = filmInfo + $(this).parent().html() + " ";
+		});
+		filmInfo = filmInfo + "</div>";
+
+	});
+	return filmInfo;
+
 }
 
 function callFilmwebForExplicitMovie(movieNode, Movie, theUrl, callback) {
@@ -35,69 +76,36 @@ function callFilmwebForExplicitMovie(movieNode, Movie, theUrl, callback) {
 				callback(false);
 				return;
 			}
-			data = data.substring(b, e);
+			var contentNode = $(data).find(".filmMainHeaderParent .filmMainHeader");
 
-			var contentNode = $(data);
-			contentNode.find("script").remove();
-			contentNode.find(".communityRate").remove();
-			contentNode.find(".emptyPlotInfo").remove();
-			contentNode.find(".hide").remove();
-			contentNode.find(".rankAndWts").remove();
 			makeHrefAbsolute(filmwebUrl, contentNode);
 
-			// console.log(contentNode.html());
-			var det = {};
+			var details = {};
 
-			var filmTitleNd = contentNode.find(".filmTitle");
-			var mtitleNd = filmTitleNd.find("h1");
+			var filmTitle_node = contentNode.find(".hdr");
 
-			det.titlePol = mtitleNd.text();
-			det.href = mtitleNd.find("a").attr("href");
-			det.titleAng = filmTitleNd.find("h2").text();
-			det.year = filmTitleNd.find("#filmYear").text();
+			details.titlePol = filmTitle_node.text();
+			details.href = filmTitle_node.find("a").attr("href");
+			details.year = filmTitle_node.find("span").text();
+			details.titleAng = contentNode.find(".cap").text();
+			details.plot = contentNode.find(".filmPlot").text();
+			details.filmInfo = contentNode.find(".filmInfo");
 
-			det.time = contentNode.find(".filmTime").text();
+			var ratingNode = $(data).find(".ratingInfo .boxContainer");
 
-			var mRatingNd = contentNode.find(".filmRateInfo");
-			det.rate = mRatingNd.find(".filmRate").text();
-			det.votes = mRatingNd.find(".votesCount").text();
-			det.plot = contentNode.find(".filmPlot").text();
-			if (!det.plot) {
-				var altDesc = contentNode.find(".sep-hr").find("p");
-				if (altDesc.html() != null) {
-					det.plot = altDesc.html();
-				}
-			}
+			details.rate = ratingNode.find(".nowrap").text();
+			details.votes = ratingNode.find(".full-width").find("span").text();
 
-			var filmInfo = "";
-			contentNode.find(".filmInfo").find("tr").each(function(i) {
-				var th = $(this).find("th");
-				var td = $(this).find("td");
-				filmInfo = filmInfo + "<div><strong>" + capitaliseFirstLetter(th.text()) + "</strong>";
-				td.find("a").each(function(i) {
-					filmInfo = filmInfo + $(this).parent().html() + " ";
-				});
-				filmInfo = filmInfo + "</div>";
+			// and fix
+			details.rate = getRatingFromFilmWeb(details.rate.trim());
+			details.year = removeOnlyBrackets(details.year.trim());
+			details.filmInfo = fixFilmwebInfo(details.filmInfo);
 
-			});
-			det.filmInfo = filmInfo;
+		//	console.info(details);
 
-			// console.log("DETAILS = " + JSON.stringify(det));
-
-			var movieHtml = "<h3><a href='" + det.href + "'>" + det.titlePol + " " + det.year + "</a></h3>";
-			if (det.titleAng) {
-				movieHtml = movieHtml + "Ang: <strong>" + det.titleAng + "</strong>";
-			}
-			movieHtml = movieHtml + "<div>" + det.time + "</div>";
-			if (det.rate.indexOf("-") == -1) {
-				movieHtml = movieHtml + "<div>Ratings:" + det.rate + " od " + det.votes + "</div>";
-			}
-			movieHtml = movieHtml + "<div><p>" + det.plot + "</p></div>";
-			movieHtml = movieHtml + det.filmInfo;
-
-			var rating = getRatingFromFilmWeb(det.rate);
-			filmwebCache.addMovie(Movie, movieHtml, rating);
-			updateMovieSection(movieNode, movieHtml, Movie, rating, myOPT.opts.FilmWeb);
+			var movieHtml =  "<div>" + constructInfo(details) + "</div>";
+			filmwebCache.addMovie(Movie, movieHtml, details.rate);
+			updateMovieSection(movieNode, movieHtml, Movie, details.rate, myOPT.opts.FilmWeb);
 			callback(true);
 
 		},
