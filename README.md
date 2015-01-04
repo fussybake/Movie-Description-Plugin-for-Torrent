@@ -5,14 +5,14 @@ Chrome Extension to
  - The Pirate Bay 
  - Kickass
 
- websites that integrates IMDB and/or FilmWeb description and movie ratings into torrent search results.
+ torrent websites that integrates IMDB and/or FilmWeb description and movie ratings into torrent search results.
 
 **version 0.2.9, last update: 2015-01-04**
 
 Use Cases
 --------------
 
-- *I browse TPB in search or interesting movies to watch, but need to check with movies site like IMDB to check if the movie is interesting*
+- *I browse torrent sites in search or interesting movies to watch, but need to check with movies site like IMDB to check if the movie is interesting*
 
  This plugin automatically extracts movie title from torrent title and downloads movie description with rating from IMDB and/or FilmWeb.
 
@@ -24,9 +24,9 @@ Use Cases
 
  This plugin has a place call 'blacklist' where you can send the movie and it won't be visible in the following searches. Of course you can resurrect the movie from blacklist at any time.
  
-- *As a TPB website user, I don't like those tons of ads on the webpage* 
+- *As a torrent website user, I don't like those tons of ads on the webpage* 
 
- This plugin can remove ads on TBP site. It is not perfect though, works with ~ 90% of those ads.
+ This plugin can remove some adds of the torrent site. It is not perfect though.
 
 - *I don't watch movies, I just want quickly and easily search on Google, Google Images or IMDB with query being equal to torrent title.*
 
@@ -34,7 +34,7 @@ Use Cases
 
 List of features
 --------------
-- Adds column to PirateBay search results with description and movie rating from IMDB and/or FilmWeb. It performs some basic heuristic to extract movie title and perform ajax calls to get the data form movie site.
+- Adds column to torrent website search results with description and movie rating from IMDB and/or FilmWeb. It performs some basic heuristic to extract movie title and perform ajax calls to get the data form movie site.
 - Marks films with high rating to be better visible to the user
 - Hides films with low rating not to be visible to the user
 - Hides movies with CAM version not to be visible to the user
@@ -45,12 +45,12 @@ List of features
 
 Installation
 --------------
-- Download latest code, e.g: https://github.com/witoza/Movie-Description-Plugin-for-The-Pirate-Bay/zipball/master
+- Download latest code, e.g: https://github.com/witoza/Movie-Description-Plugin-for-Torrent/zipball/master
 - Navigate chrome to **chrome://extensions**
 - Check the **Developer mode** toggle
 - Click on **Load Unpacked Extension...**
 - Select the folder containing the extension and load it
-- Go to TPB and enjoy it
+- Go to torrent site and enjoy it
 
 Future work
 --------------

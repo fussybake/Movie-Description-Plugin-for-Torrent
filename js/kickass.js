@@ -25,7 +25,8 @@ function augmentKickass() {
 	}
 
 
-	var resultSet = $('.mainpart').find("table").find("tbody").find(".firstr");
+	var main_node = $('.mainpart').find("table.data:first").find("tbody");
+	var resultSet = main_node.find(".firstr");
 
 	var x = resultSet.children(1).first();
 	x.removeClass("width100perc")
@@ -39,14 +40,12 @@ function augmentKickass() {
 		resultSet.append("<th>" + prepateURLToOptions("IMDB") + "</th>");
 	}
 
-
-
 	console.log("[MAIN] Begin of scanning");
 
-	$('.mainpart').find("table").find("tbody").children().each(function(index) {
-		if (index < 2) return;
+	main_node.children().each(function(index) {
+		if (index < 1) return;
 
-		var titleNode = $(this).find(".torrentname .markeredBlock .cellMainLink");
+		var titleNode = $(this).find(".markeredBlock .cellMainLink");
 
 		var originalTitle = titleNode.text();
 		console.log("-------");
