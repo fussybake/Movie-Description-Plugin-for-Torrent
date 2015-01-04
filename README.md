@@ -20,7 +20,7 @@ Use Cases
 
  This plugin can hide movies with low rating and promote movies with high rating.
 
-- *... and I've already watched so much movies, it takes a lot of time to find ones I haven't watched.*
+- *... and I've already watched so many movies, it takes a lot of time to find ones I haven't watched.*
 
  This plugin has a place call 'blacklist' where you can send the movie and it won't be visible in the following searches. Of course you can resurrect the movie from blacklist at any time.
  
