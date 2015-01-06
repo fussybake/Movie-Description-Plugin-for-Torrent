@@ -1,11 +1,15 @@
 "use strict";
 
 function isMovieACam(movie) {
-	return movie.indexOf("CAM") != -1 || movie.indexOf("Cam") != -1 || movie.indexOf("HDCam") != -1 || movie.indexOf(".TS.") != -1 || movie.indexOf("TS") != -1;
+	var str = movie.toLowerCase();
+	
+	return 	str.indexOf("cam") > -1 || str.indexOf("ts") > -1 || str.indexOf("telesync") > -1;
 }
 
 function isMovieAHindi(movie) {
-	return movie.indexOf("Hindi") != -1;
+	var str = movie.toLowerCase();
+	
+	return movie.indexOf("hindi") > 0;
 }
 
 function isMovieAlreadyBlacklisted(cleanedTitle) {
@@ -270,7 +274,7 @@ function getCleanTitleGeneric(originalTitle) {
 	console.log(" after removing everything inside brackets '" + filmNameClean + "'");
 	//
 	var special = filmNameClean.match(new RegExp(
-			"\\.mpg|\\.avi|TOPSIDER|KLAXXON|LIMITED|HDTV|SWEDISH|SWESUB|BDRIP|XviD|DVD|AC3|UNRATED|720p|1080p", "gi"));
+			"\\.mpg|\\.avi|TOPSIDER|KLAXXON|LIMITED|HDTV|SWEDISH|SWESUB|BDRIP|XviD|DVD|AC3|UNRATED|720p|1080p|BluRay", "gi"));
 	if (special != null && special.length > 0) {
 		var i = filmNameClean.indexOf(special[0]);
 		filmNameClean = filmNameClean.substring(0, i);
