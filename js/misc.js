@@ -1,11 +1,5 @@
 "use strict";
 
-var DELIMITER = "ISOHUNTTHEDELIMITERTHE";
-
-function removeDelimiter(str) {
-	return str.replace(new RegExp(DELIMITER, "gi"), "");
-}
-
 function isMovieACam(movie) {
 	return movie.indexOf("CAM") != -1 || movie.indexOf("Cam") != -1 || movie.indexOf("HDCam") != -1 || movie.indexOf(".TS.") != -1 || movie.indexOf("TS") != -1;
 }
@@ -22,7 +16,7 @@ function addLinksCell(htmlNode, originalTitle, cleanedTitle) {
 	var anyColumnAdded = false;
 	if (myOPT.opts.Links.Use_torrent_title_as_query_param) {
 		htmlNode.append(getLinksColumn({
-			title : removeDelimiter(originalTitle),
+			title : originalTitle,
 			year : null
 		}));
 		anyColumnAdded = true;
@@ -61,7 +55,7 @@ function addLinksCell(htmlNode, originalTitle, cleanedTitle) {
 function addFilmwebCell(htmlNode, cleanedTitle) {
 	var callIMDBWhenNeeded = !myOPT.opts.IMDB.Integrate_with_IMDB && myOPT.opts.FilmWeb.Fallback_to_IMDB_when_cant_find_movie;
 	if (cleanedTitle.not_sure && filmwebCache.getFromCache(cleanedTitle) == undefined) {
-		var node = $("<p>Is '" + removeDelimiter(cleanedTitle.title) + "' a movie ?</p>");
+		var node = $("<p>Is '" + cleanedTitle.title + "' a movie ?</p>");
 		node.click(function() {
 			replaceWith(htmlNode, getAjaxIcon());
 			callFilmweb(htmlNode, cleanedTitle, function(found) {
@@ -83,7 +77,7 @@ function addFilmwebCell(htmlNode, cleanedTitle) {
 
 function addIMDBCell(htmlNode, cleanedTitle) {
 	if (cleanedTitle.not_sure && imdbCache.getFromCache(cleanedTitle) == undefined) {
-		var node = $("<p>Is '" + removeDelimiter(cleanedTitle.title) + "' a movie ?</p>");
+		var node = $("<p>Is '" + cleanedTitle.title + "' a movie ?</p>");
 		node.click(function() {
 			replaceWith(htmlNode, getAjaxIcon());
 			callImdb(htmlNode, cleanedTitle);
@@ -96,13 +90,12 @@ function addIMDBCell(htmlNode, cleanedTitle) {
 
 function callAjax(qname, callOpts) {
 
-
-	callOpts.beforeSend();
+	if (callOpts.beforeSend) callOpts.beforeSend();
+	
 	chrome.runtime.sendMessage({
 	    method: callOpts.method,
 	    action: 'xhttp',
-	    url: callOpts.url,
-	    data: 'q=something',
+	    url: callOpts.url
 
 	}, function(responseText) {
 		if (responseText.length == 0) {

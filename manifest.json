@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Movie Description Plugin for Torrent",
-	"version": "0.2.9",
+	"version": "0.3.0",
 	"description": "Movie Description Plugin for Torrent",
 	"web_accessible_resources": ["ajax_loading_small.gif", "options.html"],
 	

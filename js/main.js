@@ -8,7 +8,6 @@ function isKickass() {
 	return window.location.hostname.indexOf("kickass") >= 0;
 }
 
-
 $(document).ready(function() {
 	afterLoad(function() {
 		if (isPirateBay()) {

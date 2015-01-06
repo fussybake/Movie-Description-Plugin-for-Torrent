@@ -7,7 +7,7 @@ Chrome Extension to
 
  torrent websites that integrates IMDB and/or FilmWeb description and movie ratings into torrent search results.
 
-**version 0.2.9, last update: 2015-01-04**
+**version 0.3.0, last update: 2015-01-06**
 
 Use Cases
 --------------

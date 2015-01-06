@@ -101,6 +101,7 @@ function load_next_page(opts) {
 		success : function(data) {
 			var main_part2 = $(data).find(".mainpart");
 			impl(main_part2, opts);
+			main_part2.append(make_load_more_movies_btn());
 			//main_part.find(".pages").remove();
 			main_part.parent().append(main_part2);
 
@@ -114,6 +115,25 @@ function load_next_page(opts) {
 	});
 	
 }
+
+function get_movie_category_page_number(path) {
+    
+    var p = path.indexOf("/movies/");
+    if (p == -1) return -1;
+    var r = path.indexOf("/", p + "/movies/".length);
+    if (r == -1) return 1; 
+    return path.substring(p + "/movies/".length, r);
+
+}
+
+function make_load_more_movies_btn() {
+	var node = $('<a href="javascript: return false;" class="load_more_movies turnoverButton siteButton bigButton">More...</a>');
+	node.click(function() {
+		load_next_page(myOPT.opts);
+	});
+	return node;
+}
+
 
 function handle_infinite_scroll() {
 
@@ -129,20 +149,10 @@ function handle_infinite_scroll() {
 	});
 }
 
-function get_movie_category_page_number(path) {
-    
-    var p = path.indexOf("/movies/");
-    if (p == -1) return -1;
-    var r = path.indexOf("/", p + "/movies/".length);
-    if (r == -1) return 1; 
-    return path.substring(p + "/movies/".length, r);
-
-}
 
 function addInfiniteScroll() {
 
 	var path = window.location.pathname;
-
 	current_page = parseInt(get_movie_category_page_number(path));
 
 	if (current_page == -1) {
@@ -150,7 +160,8 @@ function addInfiniteScroll() {
 		return;
 	}
 
-	$(window).append('<script type="text/javascript"> handle_infinite_scroll(); </script>');
+	handle_infinite_scroll();
+	$(".mainpart").append(make_load_more_movies_btn());
 }
 
 function augmentKickass() {
@@ -165,18 +176,20 @@ function augmentKickass() {
 		console.log("[MAIN] Removing adds");
 		$('#sidebar').remove();
 		$('iframe').remove();
+		$('.chat-bar').remove();
 		$('.feedbackButton').remove();
-
 	}
+
+	var main_part = $(".mainpart");
+	createOptionsBreadcrumbsNode().insertBefore(main_part);
+
 	if (!opts.General.Enable_augmenting){
 		console.log("[MAIN] Augmenting has been disabled");
 		return;
 	}
 
 	addInfiniteScroll();
-
-	var main_part = $(".mainpart");
-	createOptionsBreadcrumbsNode().insertBefore(main_part);
+	
 	impl(main_part, opts);
 
 }

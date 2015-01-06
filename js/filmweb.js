@@ -11,6 +11,7 @@ function getRatingFromFilmWeb(rate) {
 			rating = rate;
 		else
 			rating = rate.substring(0, e);
+		if (rate == "") return null;
 
 		rating = rating.replace(new RegExp("\\,", "gi"), ".");
 		rating = parseFloat(rating);
@@ -48,7 +49,6 @@ function fixFilmwebInfo(contentNode) {
 		if (th.text() == "boxoffice:") return;
 		if (th.text() == "nagrody:") return;
 
-
 		filmInfo = filmInfo + "<div><strong>" + capitaliseFirstLetter(th.text()) + "</strong> ";
 		td.find("a").each(function(i) {
 			filmInfo = filmInfo + $(this).parent().html() + " ";
@@ -68,15 +68,12 @@ function callFilmwebForExplicitMovie(movieNode, Movie, theUrl, callback) {
 		},
 		success : function(data) {
 
-			// this is workaround for $(data).html() returns empty
-			var b = data.indexOf("<div class=filmMainHeaderParent");
-			var e = data.indexOf("<div class=filmPosterBox");
-			if (b == -1 || e == -1) {
+			var contentNode = $(data).find(".filmMainHeaderParent .filmMainHeader");
+			if (contentNode.length == 0) {
 				updateMovieSection(movieNode, null, Movie, null, myOPT.opts.FilmWeb);
 				callback(false);
 				return;
 			}
-			var contentNode = $(data).find(".filmMainHeaderParent .filmMainHeader");
 
 			makeHrefAbsolute(filmwebUrl, contentNode);
 
@@ -110,7 +107,7 @@ function callFilmwebForExplicitMovie(movieNode, Movie, theUrl, callback) {
 
 		},
 		failure : function(data) {
-			replaceWith(movieNode, "Can't connect to Filmweb");
+			replaceWith(movieNode, "Can't connect to Filmweb. Try again later");
 		}
 	});
 
