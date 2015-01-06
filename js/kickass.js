@@ -149,7 +149,6 @@ function handle_infinite_scroll() {
 	});
 }
 
-
 function addInfiniteScroll() {
 
 	var path = window.location.pathname;

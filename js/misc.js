@@ -176,7 +176,7 @@ function updateMovieSection(movieNode, content, movie, rating, intOpts) {
 
 	if (rating > 0) {
 		if (rating <= parseFloat(intOpts.Hide_movies_with_rating_less_than)) {
-			movieNode.parent().hide(500);
+			movieNode.parent().remove();
 		}
 		if (rating >= parseFloat(intOpts.Mark_movies_with_rating_greater_or_equal_than)) {
 			movieNode.css('background-color', '#FFFFAA');
@@ -240,7 +240,7 @@ function removeBrackets(str, leadingOnly) {
 }
 
 function getFirstYear(str) {
-	var tmp = str.match(new RegExp("[1-2][0-9][0-9][0-9]", "gi"));
+	var tmp = str.match(new RegExp("19[2-9][0-9]|20[0-9][0-9]", "gi"));
 	if (tmp != null && tmp.length > 0) {
 		return tmp[0];
 	}
@@ -270,7 +270,7 @@ function getCleanTitleGeneric(originalTitle) {
 	console.log(" after removing everything inside brackets '" + filmNameClean + "'");
 	//
 	var special = filmNameClean.match(new RegExp(
-			"\\.mpg|\\.avi|TOPSIDER|KLAXXON|LIMITED|HDTV|SWEDISH|SWESUB|BDRIP|XviD|DVD|AC3|UNRATED|720p", "gi"));
+			"\\.mpg|\\.avi|TOPSIDER|KLAXXON|LIMITED|HDTV|SWEDISH|SWESUB|BDRIP|XviD|DVD|AC3|UNRATED|720p|1080p", "gi"));
 	if (special != null && special.length > 0) {
 		var i = filmNameClean.indexOf(special[0]);
 		filmNameClean = filmNameClean.substring(0, i);
@@ -293,7 +293,7 @@ function getCleanTitleGeneric(originalTitle) {
 		};
 	}
 
-	var ttr = [ "XDM", "AAC", "HD", "CAM", "DVDScrRip", "Dvdscr", "WEBRIP", "BRRip", "DVDRip", "Rip", "1CD", "1xCD", "2CD", "MP3", "x264 5.1", "x264", "dvd5",
+	var ttr = [ "EXTENDED", "XDM", "AAC", "HD", "CAM", "DVDScrRip", "Dvdscr", "WEBRIP", "BRRip", "DVDRip", "Rip", "1CD", "1xCD", "2CD", "MP3", "x264 5.1", "x264", "dvd5",
 			 "RRG", "Xvid", "ICTV", "NL subs", "IPS", "Rel -", "\\*", "720p", "Hindi", "-", "\\(Rel \\)",
 			"\\( Rel \\)", "\\( \\)", "\\(\\)" ];
 	for ( var i in ttr) {
